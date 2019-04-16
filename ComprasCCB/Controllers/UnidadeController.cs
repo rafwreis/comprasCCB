@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ComprasCCB.AcessoDados;
+using ComprasCCB.AcessoDados.Dominio;
 using ComprasCCB.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,15 +12,23 @@ namespace ComprasCCB.Controllers
 {
     public class UnidadeController : Controller
     {
+        private readonly ComprasCCBContext _comprasCCBContext;
+
+        public UnidadeController(ComprasCCBContext comprasCCBContext)
+        {
+            _comprasCCBContext = comprasCCBContext;
+        }
+
         // GET: Unidade
         public ActionResult Index()
         {
-            var model = new List<UnidadeViewModel>()
-            {
-                new UnidadeViewModel(){ Id = 1, Descricao = "PC"},
-                new UnidadeViewModel(){ Id = 2, Descricao = "UN"},
-                new UnidadeViewModel(){ Id = 3, Descricao = "LT"}
-            };
+            var model = _comprasCCBContext
+                .Unidade
+                .Select(s => new UnidadeViewModel()
+                {
+                    Id = s.Id,
+                    Descricao = s.Descricao
+                });
 
             return View(model);
         }
@@ -42,7 +52,13 @@ namespace ComprasCCB.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
+                _comprasCCBContext
+                   .Unidade.Add(new Unidade()
+                   {
+                       Descricao = model.Descricao
+                   });
+
+                _comprasCCBContext.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -55,7 +71,17 @@ namespace ComprasCCB.Controllers
         // GET: Unidade/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var unidade = _comprasCCBContext
+                .Unidade
+                .FirstOrDefault(w => w.Id == id);
+
+            var model = new UnidadeViewModel()
+            {
+                Id = unidade.Id,
+                Descricao = unidade.Descricao
+            };
+
+            return View(model);
         }
 
         // POST: Unidade/Edit/5
@@ -65,7 +91,13 @@ namespace ComprasCCB.Controllers
         {
             try
             {
-                // TODO: Add update logic here
+                var unidade = _comprasCCBContext.Unidade.FirstOrDefault(w => w.Id == model.Id);
+                unidade.Descricao = model.Descricao;
+
+                _comprasCCBContext
+                  .Unidade.Attach(unidade);
+
+                _comprasCCBContext.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }

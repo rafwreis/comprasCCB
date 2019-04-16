@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ComprasCCB.AcessoDados;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -33,6 +35,17 @@ namespace ComprasCCB
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+
+            services.AddEntityFrameworkSqlServer()
+                .AddDbContext<ComprasCCBContext>((serviceProvider, options) =>
+                    options.UseSqlServer(connectionString).UseInternalServiceProvider(serviceProvider)
+            );
+
+            var dbContextOptionsbuilder = new DbContextOptionsBuilder<ComprasCCBContext>().UseSqlServer(connectionString);
+
+            services.AddSingleton(dbContextOptionsbuilder.Options);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
