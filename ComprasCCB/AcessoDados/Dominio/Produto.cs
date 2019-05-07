@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ComprasCCB.AcessoDados.Dominio
+﻿namespace ComprasCCB.AcessoDados.Dominio
 {
     public class Produto
     {
@@ -11,12 +6,20 @@ namespace ComprasCCB.AcessoDados.Dominio
 
         public string Descricao { get; set; }
 
-        public Fornecedor Fornecedor { get; set; }
+        public int? FornecedorId { get; set; }
 
-        public Unidade Unidade { get; set; }
+        public int? UnidadeId { get; set; }
+
+        public int? CategoriaId { get; set; }
 
         public string Referencia { get; set; }
 
         public double UltimoPreco { get; set; }
+
+        public virtual Unidade Unidade { get; set; }
+
+        public virtual Categoria Categoria { get; set; }
+
+        public virtual Fornecedor Fornecedor { get; set; }
     }
 }

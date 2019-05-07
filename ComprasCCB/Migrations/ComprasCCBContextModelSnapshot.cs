@@ -19,6 +19,19 @@ namespace ComprasCCB.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("ComprasCCB.AcessoDados.Dominio.Categoria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Descricao");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categoria");
+                });
+
             modelBuilder.Entity("ComprasCCB.AcessoDados.Dominio.Fornecedor", b =>
                 {
                     b.Property<int>("Id")
@@ -39,6 +52,8 @@ namespace ComprasCCB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("CategoriaId");
+
                     b.Property<string>("Descricao")
                         .HasMaxLength(200);
 
@@ -51,6 +66,8 @@ namespace ComprasCCB.Migrations
                     b.Property<int?>("UnidadeId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoriaId");
 
                     b.HasIndex("FornecedorId");
 
@@ -75,6 +92,10 @@ namespace ComprasCCB.Migrations
 
             modelBuilder.Entity("ComprasCCB.AcessoDados.Dominio.Produto", b =>
                 {
+                    b.HasOne("ComprasCCB.AcessoDados.Dominio.Categoria", "Categoria")
+                        .WithMany("Produtos")
+                        .HasForeignKey("CategoriaId");
+
                     b.HasOne("ComprasCCB.AcessoDados.Dominio.Fornecedor", "Fornecedor")
                         .WithMany("Produtos")
                         .HasForeignKey("FornecedorId");

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using ComprasCCB.AcessoDados;
 using ComprasCCB.AcessoDados.Dominio;
 using ComprasCCB.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ComprasCCB.Controllers
 {
@@ -91,11 +89,13 @@ namespace ComprasCCB.Controllers
         {
             try
             {
-                var unidade = _comprasCCBContext.Unidade.FirstOrDefault(w => w.Id == model.Id);
-                unidade.Descricao = model.Descricao;
-
-                _comprasCCBContext
-                  .Unidade.Attach(unidade);
+                _comprasCCBContext.Entry(
+                    new Unidade
+                    {
+                        Id = model.Id,
+                        Descricao = model.Descricao
+                    })
+                .State = EntityState.Modified;
 
                 _comprasCCBContext.SaveChanges();
 

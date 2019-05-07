@@ -35,3 +35,9 @@ body {
         display: none;
     }
 }
+
+.fill {
+    background: url(/images/logo.jpg) no-repeat center center;
+    min-height: 600px;
+    
+}
