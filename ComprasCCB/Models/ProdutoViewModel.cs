@@ -1,7 +1,4 @@
-﻿using ComprasCCB.AcessoDados.Dominio;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ComprasCCB.Models
 {
@@ -18,7 +15,8 @@ namespace ComprasCCB.Models
         public string Referencia { get; set; }
 
         [Display(Name = "Último Preço")]
-        public double UltimoPreco { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = true)]
+        public double? UltimoPreco { get; set; }
 
         [Display(Name = "Fornecedor")]
         public int? FornecedorId { get; set; }
@@ -28,5 +26,14 @@ namespace ComprasCCB.Models
 
         [Display(Name = "Categoria")]
         public int? CategoriaId { get; set; }
+
+        [Display(Name = "Unidade")]
+        public string Unidade { get; set; }
+
+        [Display(Name = "Categoria")]
+        public string Categoria { get; set; }
+
+        [Display(Name = "Fornecedor")]
+        public string Fornecedor { get; set; }
     }
 }

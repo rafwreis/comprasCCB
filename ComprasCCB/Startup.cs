@@ -3,10 +3,13 @@ using ComprasCCB.AcessoDados;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace ComprasCCB
 {
@@ -43,6 +46,19 @@ namespace ComprasCCB
             var dbContextOptionsbuilder = new DbContextOptionsBuilder<ComprasCCBContext>().UseSqlServer(connectionString);
 
             services.AddSingleton(dbContextOptionsbuilder.Options);
+
+            services.Configure<RequestLocalizationOptions>(
+               options =>
+               {
+                   var supportedCultures = new List<CultureInfo>
+                       {
+                            new CultureInfo("pt-BR")
+                       };
+
+                   options.DefaultRequestCulture = new RequestCulture(culture: "pt-BR", uiCulture: "pt-BR");
+                   options.SupportedCultures = supportedCultures;
+                   options.SupportedUICultures = supportedCultures;
+               });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

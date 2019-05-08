@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using ComprasCCB.AcessoDados;
 using ComprasCCB.AcessoDados.Dominio;
 using ComprasCCB.Models;
@@ -11,123 +13,74 @@ namespace ComprasCCB.Controllers
     public class UnidadeController : Controller
     {
         private readonly ComprasCCBContext _comprasCCBContext;
+        private readonly IMapper _mapper;
 
-        public UnidadeController(ComprasCCBContext comprasCCBContext)
+        public UnidadeController(ComprasCCBContext comprasCCBContext, IMapper mapper)
         {
             _comprasCCBContext = comprasCCBContext;
+            _mapper = mapper;
         }
 
-        // GET: Unidade
         public ActionResult Index()
         {
-            var model = _comprasCCBContext
-                .Unidade
-                .Select(s => new UnidadeViewModel()
-                {
-                    Id = s.Id,
-                    Descricao = s.Descricao
-                });
-
+            var model = _mapper.Map<List<UnidadeViewModel>>(_comprasCCBContext.Unidade);
             return View(model);
         }
 
-        // GET: Unidade/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Unidade/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Unidade/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(UnidadeViewModel model)
         {
-            try
-            {
-                _comprasCCBContext
-                   .Unidade.Add(new Unidade()
-                   {
-                       Descricao = model.Descricao
-                   });
+            _comprasCCBContext.Unidade.Add(_mapper.Map<Unidade>(model));
+            _comprasCCBContext.SaveChanges();
 
-                _comprasCCBContext.SaveChanges();
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Unidade/Edit/5
         public ActionResult Edit(int id)
         {
             var unidade = _comprasCCBContext
                 .Unidade
                 .FirstOrDefault(w => w.Id == id);
 
-            var model = new UnidadeViewModel()
-            {
-                Id = unidade.Id,
-                Descricao = unidade.Descricao
-            };
-
+            var model = _mapper.Map<UnidadeViewModel>(unidade);
             return View(model);
         }
 
-        // POST: Unidade/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(UnidadeViewModel model)
         {
-            try
-            {
-                _comprasCCBContext.Entry(
-                    new Unidade
-                    {
-                        Id = model.Id,
-                        Descricao = model.Descricao
-                    })
-                .State = EntityState.Modified;
+            _comprasCCBContext.Entry(_mapper.Map<Unidade>(model)).State = EntityState.Modified;
+            _comprasCCBContext.SaveChanges();
 
-                _comprasCCBContext.SaveChanges();
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Unidade/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var unidade = _comprasCCBContext
+               .Unidade
+               .FirstOrDefault(w => w.Id == id);
+
+            var model = _mapper.Map<UnidadeViewModel>(unidade);
+            return View(model);
         }
 
-        // POST: Unidade/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            var unidade = _comprasCCBContext.Unidade.FirstOrDefault(w => w.Id == id);
+            _comprasCCBContext.Unidade.Remove(unidade);
+            _comprasCCBContext.SaveChanges();
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

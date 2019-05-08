@@ -39,3 +39,7 @@ C:\Rafael\Projects\GitHub\comprasCCB\ComprasCCB\obj\Debug\netcoreapp2.2\Razor\Vi
 C:\Rafael\Projects\GitHub\comprasCCB\ComprasCCB\obj\Debug\netcoreapp2.2\Razor\Views\Produto\Create.g.cshtml.cs
 C:\Rafael\Projects\GitHub\comprasCCB\ComprasCCB\obj\Debug\netcoreapp2.2\Razor\Views\Produto\Edit.g.cshtml.cs
 C:\Rafael\Projects\GitHub\comprasCCB\ComprasCCB\obj\Debug\netcoreapp2.2\Razor\Views\Produto\Index.g.cshtml.cs
+C:\Rafael\Projects\GitHub\comprasCCB\ComprasCCB\obj\Debug\netcoreapp2.2\Razor\Views\Categoria\Delete.g.cshtml.cs
+C:\Rafael\Projects\GitHub\comprasCCB\ComprasCCB\obj\Debug\netcoreapp2.2\Razor\Views\Fornecedor\Delete.g.cshtml.cs
+C:\Rafael\Projects\GitHub\comprasCCB\ComprasCCB\obj\Debug\netcoreapp2.2\Razor\Views\Produto\Delete.g.cshtml.cs
+C:\Rafael\Projects\GitHub\comprasCCB\ComprasCCB\obj\Debug\netcoreapp2.2\Razor\Views\Unidade\Delete.g.cshtml.cs

@@ -23,13 +23,8 @@ namespace ComprasCCB.Controllers
 
         public ActionResult Index()
         {
-            var model = _mapper.Map<List<CategoriaViewModel>>(_comprasCCBContext.Categoria);                
+            var model = _mapper.Map<List<CategoriaViewModel>>(_comprasCCBContext.Categoria);
             return View(model);
-        }
-
-        public ActionResult Details(int id)
-        {
-            return View();
         }
 
         public ActionResult Create()
@@ -41,17 +36,10 @@ namespace ComprasCCB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CategoriaViewModel model)
         {
-            try
-            {
-                _comprasCCBContext.Categoria.Add(_mapper.Map<Categoria>(model));
-                _comprasCCBContext.SaveChanges();
+            _comprasCCBContext.Categoria.Add(_mapper.Map<Categoria>(model));
+            _comprasCCBContext.SaveChanges();
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View(model);
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         public ActionResult Edit(int id)
@@ -68,38 +56,31 @@ namespace ComprasCCB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(CategoriaViewModel model)
         {
-            try
-            {
-                _comprasCCBContext.Entry(_mapper.Map<Categoria>(model)).State = EntityState.Modified;
-                _comprasCCBContext.SaveChanges();
+            _comprasCCBContext.Entry(_mapper.Map<Categoria>(model)).State = EntityState.Modified;
+            _comprasCCBContext.SaveChanges();
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View(model);
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         public ActionResult Delete(int id)
         {
-            return View();
+            var categoria = _comprasCCBContext
+                .Categoria
+                .FirstOrDefault(w => w.Id == id);
+
+            var model = _mapper.Map<CategoriaViewModel>(categoria);
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            var categoria = _comprasCCBContext.Categoria.FirstOrDefault(w => w.Id == id);
+            _comprasCCBContext.Categoria.Remove(categoria);
+            _comprasCCBContext.SaveChanges();
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -14,7 +14,7 @@
 
         public string Referencia { get; set; }
 
-        public double UltimoPreco { get; set; }
+        public double? UltimoPreco { get; set; }
 
         public virtual Unidade Unidade { get; set; }
 
